@@ -1,3 +1,145 @@
 .Field{
+    background: #efefef;
+    margin-bottom: 10px;
+    text-align: left;
+    box-sizing: border-box;
+    padding: 5px 10px;
+
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Field[contentEditable="true"]{
+    color: blue
+}
+
+.Edit{
+    float: right;
     border: 1px solid red;
+    display: block;
+    width: 20px;
+    text-align: center;
+    border-radius: 50%;
+    height: 20px;
+    line-height: 20px;
+}
+
+.Remove{
+    float: right;
+    border: 1px solid red;
+    display: block;
+    width: 20px;
+    text-align: center;
+    border-radius: 50%;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 10px;
+}
+
+.InputRow{
+    background: #ddd;
+    /* display: flex; */
+    padding: 10px;
+    /* align-items: center; */
+}
+
+.InputRow input[type="text"]{
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    box-sizing: border-box;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.InputRow .inputProp[type=text]{
+    background-color: #ffd2d2;
+}
+
+.InputRow .inputProp[type=text] + .{
+    background-color: #ffd2d2;
+}
+
+.InputRow input[type="text"]:not(:first-of-type){
+    /* margin-left: 10px; */
+    margin-top: 10px;
+}
+
+.InputWrapper{
+    margin-top: 10px;
+    position: relative;
+}
+
+.InputWrapperStr{
+    margin-top: 10px;
+    position: relative;
+}
+
+.InputWrapper input[type="text"]{
+    padding-left: 38px;
+}
+
+.BtnAdd{
+    position: absolute;
+    -webkit-appearance: none;
+    border: none;
+    border-right: 1px solid #bbb;
+    height: 36px;
+    font-size: 20px;
+    color: #999;
+    left: 1px;
+    top: 1px;
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+    background: #f1f1f1;
+}
+
+.BtnObj{
+    position: absolute;
+    -webkit-appearance: none;
+    border: none;
+    border-left: 1px solid #bbb;
+    height: 36px;
+    font-size: 20px;
+    color: #999;
+    right: 1px;
+    top: 1px;
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+    background: #f1f1f1;
+}
+
+.RadioBtn{
+    width: 33.333%;
+    margin-bottom: 10px;
+    display: block;
+    float: left;
+}
+
+.InputCol{
+    width: 50%;
+}
+
+.OutputCol{
+    width: 50%;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.Container{
+    display: flex;
+    align-items: flex-start;
+}
+
+.OutputWrapper{
+    border: 1px solid #ccc;
+    padding: 10px;
 }
