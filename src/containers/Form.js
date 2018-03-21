@@ -30,47 +30,44 @@ class Form extends React.Component{
 
     handleChangeVal(i, e){
         if(this.state.inputConfig.str){
-            let _inputVal = e.target.value
+            let _tmpVal = e.target.value
             this.setState({
-                tmpVal: _inputVal
+                tmpVal: _tmpVal
             })
             
         }else if(this.state.inputConfig.obj){
 
         }else if(this.state.inputConfig.arr){
-            let targetInputNum = parseInt(e.target.dataset.inputprop.replace(/inputprop_/g, ''))
-            let _inputVal = this.state.tmpVal.slice()
-                _inputVal[targetInputNum] = e.target.value
+            let targetInputNum = parseInt(e.target.dataset.inputprop.replace(/inputprop_/g, ''), 10)
+            let _tmpVal = this.state.tmpVal.slice()
+                _tmpVal[targetInputNum] = e.target.value
             this.setState({
-                tmpVal: _inputVal
+                tmpVal: _tmpVal
             })
         }
     }
 
     handleClick(e){
         e.preventDefault()
-        const inputConfig = {...this.state.inputConfig, inputPropNum:1}
+        const _inputConfig = {...this.state.inputConfig, inputPropNum:1}
         const current = {
             [this.state.tmpKey]: this.state.tmpVal
         }
-        const _tmpVal = this.state.tmpVal.slice()
         if( !this.state.tmpKey || !this.state.tmpVal ) return
 
         if(this.state.inputConfig.str){
-            const val = this.state.tmpVal
             this.setState({
                 savedValue: [...this.state.savedValue, current],
-                inputConfig: inputConfig,
+                inputConfig: _inputConfig,
                 tmpKey: '',
                 tmpVal: ''
             })
         }else if(this.state.inputConfig.obj){
             
         }else if(this.state.inputConfig.arr){
-            const val = [...this.state.tmpVal]
             this.setState({
                 savedValue: [...this.state.savedValue, current],
-                inputConfig: inputConfig,
+                inputConfig: _inputConfig,
                 tmpKey: '',
                 tmpVal: []
             })
@@ -79,43 +76,75 @@ class Form extends React.Component{
     }
 
     handleChangeRadio(e){
-        let inputValue
         let selectedVal = e.target.value
-        let inputConfig = {...this.state.inputConfig}
+        let _inputConfig;
+        let _tmpVal;
+// console.log(this.state.tmpVal)
+        // let _tmpVal = [...this.state.tmpVal]
+// console.log(_tmpVal)
         switch(selectedVal){
             case 'str':
-                inputConfig.str = true
-                inputConfig.obj = false
-                inputConfig.arr = false
-                inputConfig.inputPropNum = 1
-                inputValue = [...this.state.tmpVal]
-
+                _inputConfig = {...this.state.inputConfig}
+                _inputConfig.str = true
+                _inputConfig.obj = false
+                _inputConfig.arr = false
+                _inputConfig.inputPropNum = 1
+// console.log(typeof this.state.tmpVal)
+                if(Array.isArray(this.state.tmpVal)){
+                    _tmpVal = this.state.tmpVal.slice().toString()
+                } else if (typeof this.state.tmpVal === 'string'){
+                    _tmpVal = this.state.tmpVal
+                } else if ( this.state.tmpVal === null){
+                    _tmpVal = ''
+                }
                 this.setState({
-                    inputConfig: inputConfig,
-                    tmpVal: inputValue
+                    inputConfig: _inputConfig,
+                    tmpVal: _tmpVal
                 })
                 break;
             case 'obj':
-                inputConfig.str = false
-                inputConfig.obj = true
-                inputConfig.arr = false
+                _inputConfig.str = false
+                _inputConfig.obj = true
+                _inputConfig.arr = false
                 this.setState({
-                    inputConfig: inputConfig
+                    inputConfig: _inputConfig
                 })
                 break;
             case 'arr':
-                inputConfig.str = false
-                inputConfig.obj = false
-                inputConfig.arr = true
-                inputValue = [...this.state.tmpVal]
+                _inputConfig = {...this.state.inputConfig}
+                _inputConfig.str = false
+                _inputConfig.obj = false
+                _inputConfig.arr = true
 
-                    console.log(inputValue)
+//For below, Str => Arr: ○, Obj => Arr: x
+// _tmpVal = this.state.tmpVal.slice()
+                if(Array.isArray(this.state.tmpVal)){
+                    _tmpVal = []
+                    _inputConfig.inputPropNum = 1
+                } else if(typeof this.state.tmpVal === 'string'){
+                    _tmpVal = this.state.tmpVal.split(',').filter(e => e)
+                    this.state.tmpVal.length > 0 ?
+                        _inputConfig.inputPropNum = _tmpVal.length
+                        :
+                        _inputConfig.inputPropNum = 1
+                } 
+//
 
                 this.setState({
-                    inputConfig: inputConfig,
-                    tmpVal: inputValue
+                    inputConfig: _inputConfig,
+                    tmpVal: _tmpVal
                 })
-console.log(this.state)
+                break;
+            default:
+                _inputConfig.str = true
+                _inputConfig.obj = false
+                _inputConfig.arr = false
+                _inputConfig.inputPropNum = 1
+                _tmpVal = this.state.tmpVal
+                this.setState({
+                    inputConfig: _inputConfig,
+                    tmpVal: _tmpVal
+                })
                 break;
         }
     }
@@ -123,10 +152,10 @@ console.log(this.state)
     handleClickAddProp(e){
         e.preventDefault()
         if(this.state.inputConfig.str) return
-        const inputConfig = {...this.state.inputConfig}
-        inputConfig.inputPropNum++
+        const _inputConfig = {...this.state.inputConfig}
+        _inputConfig.inputPropNum++
         this.setState({
-            inputConfig: inputConfig
+            inputConfig: _inputConfig
         })
     }
 
