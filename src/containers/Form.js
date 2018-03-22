@@ -9,12 +9,14 @@ class Form extends React.Component{
         tmpVal: [],
         savedValue: [],
         inputConfig: {
-            inputPropNum: 1,
+            inputPropNum: [1],
+            inputKeyNum: 1,
             str: true,
             obj: false,
             arr: false
         }
     }
+
 
     componentWillMount(){
         if(this.state.inputConfig.str){
@@ -34,7 +36,7 @@ class Form extends React.Component{
             this.setState({
                 tmpVal: _tmpVal
             })
-            
+
         }else if(this.state.inputConfig.obj){
 
         }else if(this.state.inputConfig.arr){
@@ -49,7 +51,7 @@ class Form extends React.Component{
 
     handleClick(e){
         e.preventDefault()
-        const _inputConfig = {...this.state.inputConfig, inputPropNum:1}
+        const _inputConfig = {...this.state.inputConfig, inputPropNum:[1]}
         const current = {
             [this.state.tmpKey]: this.state.tmpVal
         }
@@ -63,7 +65,7 @@ class Form extends React.Component{
                 tmpVal: ''
             })
         }else if(this.state.inputConfig.obj){
-            
+
         }else if(this.state.inputConfig.arr){
             this.setState({
                 savedValue: [...this.state.savedValue, current],
@@ -88,7 +90,7 @@ class Form extends React.Component{
                 _inputConfig.str = true
                 _inputConfig.obj = false
                 _inputConfig.arr = false
-                _inputConfig.inputPropNum = 1
+                _inputConfig.inputPropNum = [1]
 // console.log(typeof this.state.tmpVal)
                 if(Array.isArray(this.state.tmpVal)){
                     _tmpVal = this.state.tmpVal.slice().toString()
@@ -103,6 +105,7 @@ class Form extends React.Component{
                 })
                 break;
             case 'obj':
+                _inputConfig = {...this.state.inputConfig}
                 _inputConfig.str = false
                 _inputConfig.obj = true
                 _inputConfig.arr = false
@@ -120,14 +123,14 @@ class Form extends React.Component{
 // _tmpVal = this.state.tmpVal.slice()
                 if(Array.isArray(this.state.tmpVal)){
                     _tmpVal = []
-                    _inputConfig.inputPropNum = 1
+                    // _inputConfig.inputPropNum =
                 } else if(typeof this.state.tmpVal === 'string'){
                     _tmpVal = this.state.tmpVal.split(',').filter(e => e)
                     this.state.tmpVal.length > 0 ?
                         _inputConfig.inputPropNum = _tmpVal.length
                         :
                         _inputConfig.inputPropNum = 1
-                } 
+                }
 //
 
                 this.setState({
@@ -139,7 +142,7 @@ class Form extends React.Component{
                 _inputConfig.str = true
                 _inputConfig.obj = false
                 _inputConfig.arr = false
-                _inputConfig.inputPropNum = 1
+                _inputConfig.inputPropNum = [1]
                 _tmpVal = this.state.tmpVal
                 this.setState({
                     inputConfig: _inputConfig,
@@ -159,18 +162,31 @@ class Form extends React.Component{
         })
     }
 
+    handleClickAddKey(e){
+        e.preventDefault()
+        if(this.state.inputConfig.str) return
+        const _inputConfig = {...this.state.inputConfig}
+        _inputConfig.inputPropNum = _inputConfig.inputPropNum.concat(1)
+        _inputConfig.inputKeyNum++
+        this.setState({
+            inputConfig: _inputConfig
+        })
+    }
+
     render(){
         return(
             <div className={classes.Container}>
                 <FormInput
-                    onChangeKey={this.handleChangeKey.bind(this)} 
-                    onChangeVal={(i) => this.handleChangeVal.bind(this,i)} 
+                    onChangeKey={this.handleChangeKey.bind(this)}
+                    onChangeVal={(i) => this.handleChangeVal.bind(this,i)}
                     onClick={this.handleClick.bind(this)}
                     onChangeRadio={this.handleChangeRadio.bind(this)}
                     onClickAddProp={this.handleClickAddProp.bind(this)}
+                    onClickAddKey={this.handleClickAddKey.bind(this)}
                     PropNum={this.state.inputConfig.inputPropNum}
                     PropKey={this.state.tmpKey}
                     PropVal={this.state.tmpVal}
+                    ObjNum={this.state.objNum}
                     isStr={this.state.inputConfig.str}
                     isObj={this.state.inputConfig.obj}
                     isArr={this.state.inputConfig.arr}
@@ -185,7 +201,7 @@ class Form extends React.Component{
                         {/* {console.log(this.state.savedValue)} */}
                         {/* {this.state.savedValue.map((val, i) => {
                             return(
-                                <li 
+                                <li
                                     className={classes.Field} key={i}>
                                     {Object.keys(val)}: <span className="val">{val[Object.keys(val)]}</span> */}
                                     {/* onClick={this.edit.bind(this,i)} onKeyDown={this.editArray.bind(this, i)} */}

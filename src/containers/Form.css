@@ -60,12 +60,16 @@
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.InputRow .inputProp[type=text]{
+.InputRow .inputKey[type=text]{
     background-color: #ffd2d2;
 }
 
-.InputRow .inputProp[type=text] + .{
+.InputRow .inputKey[type=text] + .{
     background-color: #ffd2d2;
+}
+
+.ObjectWrapper > input[type=text]{
+    padding-left: 10px !important;;
 }
 
 .InputRow input[type="text"]:not(:first-of-type){
@@ -87,17 +91,33 @@
     padding-left: 38px;
 }
 
+
 .BtnAdd{
     position: absolute;
     -webkit-appearance: none;
     border: none;
     border-right: 1px solid #bbb;
-    height: 36px;
+    height: 18px;
     font-size: 20px;
     color: #999;
+    line-height:18px;
     left: 1px;
     top: 1px;
     border-top-left-radius: .25rem;
+    background: #f1f1f1;
+}
+
+.BtnAddKey{
+    position: absolute;
+    -webkit-appearance: none;
+    border: none;
+    border-right: 1px solid #bbb;
+    height: 18px;
+    font-size: 19px;
+    color: #999;
+    line-height:18px;
+    left: 1px;
+    top: 19px;
     border-bottom-left-radius: .25rem;
     background: #f1f1f1;
 }
