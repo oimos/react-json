@@ -1,19 +1,27 @@
 import React from 'react'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import FormInput from '../components/FormInput'
 import classes from './Form.css'
 
 class Form extends React.Component{
     state = {
-        tmpKey: '',
+        tmpKey: [],
         tmpVal: [],
+        tmpInput: [
+            {
+                key: [],
+                val: []
+            }
+        ],
         savedValue: [],
         inputConfig: {
             inputPropNum: [1],
             inputKeyNum: 1,
+            stepNum: 1,
             str: true,
             obj: false,
-            arr: false
+            arr: false,
         }
     }
 
@@ -25,6 +33,14 @@ class Form extends React.Component{
     }
 
     handleChangeKey(e){
+        if(this.state.inputConfig.str){
+            let currentNum = this.state.inputConfig.stepNum - 1
+            let _tmpKeyInput = this.state.tmpInput.slice()
+            _tmpKeyInput[currentNum].key[0] = e.target.value
+            this.setState({
+                tmpKeyInput: _tmpKeyInput
+            })
+        }
         this.setState({
             tmpKey: e.target.value
         })
@@ -33,46 +49,75 @@ class Form extends React.Component{
     handleChangeVal(i, e){
         if(this.state.inputConfig.str){
             let _tmpVal = e.target.value
+            let _tmpInput = this.state.tmpInput.slice()
+
+            let currentNum = this.state.inputConfig.stepNum - 1
+            let _tmpKeyInput = this.state.tmpInput.slice()
+            _tmpKeyInput[currentNum].val[0] = e.target.value
+
+
+console.log(_tmpKeyInput)
+
             this.setState({
-                tmpVal: _tmpVal
+                tmpKeyInput: _tmpKeyInput
             })
 
         }else if(this.state.inputConfig.obj){
 
         }else if(this.state.inputConfig.arr){
             let targetInputNum = parseInt(e.target.dataset.inputprop.replace(/inputprop_/g, ''), 10)
-            let _tmpVal = this.state.tmpVal.slice()
-                _tmpVal[targetInputNum] = e.target.value
+            let _tmpInput = this.state.tmpInput.slice()
+            let currentNum = this.state.inputConfig.stepNum - 1
+
+                // _tmpVal[targetInputNum] = e.target.value
             this.setState({
-                tmpVal: _tmpVal
+                tmpInput: _tmpInput
             })
+            // let _tmpVal = this.state.tmpVal.slice()
+            //     _tmpVal[targetInputNum] = e.target.value
+            // this.setState({
+            //     tmpVal: _tmpVal
+            // })
         }
     }
 
     handleClick(e){
         e.preventDefault()
         const _inputConfig = {...this.state.inputConfig, inputPropNum:[1]}
-        const current = {
-            [this.state.tmpKey]: this.state.tmpVal
-        }
-        if( !this.state.tmpKey || !this.state.tmpVal ) return
+        let _tmpInput = this.state.tmpInput.slice()
+        let currentNum = this.state.inputConfig.stepNum - 1
+        if( this.state.tmpInput[currentNum].key=='' || this.state.tmpInput[currentNum].val=='' ) return
 
         if(this.state.inputConfig.str){
+            const current = {
+                [_tmpInput[currentNum].key]: _tmpInput[currentNum].val.toString()
+            }
             this.setState({
                 savedValue: [...this.state.savedValue, current],
                 inputConfig: _inputConfig,
-                tmpKey: '',
-                tmpVal: ''
+                _tmpInput: [
+                    { key: [], val: [] }
+                ]
             })
         }else if(this.state.inputConfig.obj){
 
         }else if(this.state.inputConfig.arr){
+            const current = {
+                [_tmpInput[currentNum].key]: _tmpInput[currentNum].val
+            }
             this.setState({
                 savedValue: [...this.state.savedValue, current],
                 inputConfig: _inputConfig,
-                tmpKey: '',
-                tmpVal: []
+                _tmpInput: [
+                    { key: [], val: [] }
+                ]
             })
+            // this.setState({
+            //     savedValue: [...this.state.savedValue, current],
+            //     inputConfig: _inputConfig,
+            //     tmpKey: '',
+            //     tmpVal: []
+            // })
         }
 
     }
@@ -81,7 +126,7 @@ class Form extends React.Component{
         let selectedVal = e.target.value
         let _inputConfig;
         let _tmpVal;
-// console.log(this.state.tmpVal)
+console.log(e.target.value)
         // let _tmpVal = [...this.state.tmpVal]
 // console.log(_tmpVal)
         switch(selectedVal){
@@ -175,6 +220,7 @@ class Form extends React.Component{
 
     render(){
         return(
+            <MuiThemeProvider>
             <div className={classes.Container}>
                 <FormInput
                     onChangeKey={this.handleChangeKey.bind(this)}
@@ -184,8 +230,8 @@ class Form extends React.Component{
                     onClickAddProp={this.handleClickAddProp.bind(this)}
                     onClickAddKey={this.handleClickAddKey.bind(this)}
                     PropNum={this.state.inputConfig.inputPropNum}
-                    PropKey={this.state.tmpKey}
-                    PropVal={this.state.tmpVal}
+                    PropKey={this.state.tmpInput.key}
+                    PropVal={this.state.tmpInput.val}
                     ObjNum={this.state.objNum}
                     isStr={this.state.inputConfig.str}
                     isObj={this.state.inputConfig.obj}
@@ -213,6 +259,7 @@ class Form extends React.Component{
                     </ul>
                 </div>
             </div>
+            </MuiThemeProvider>
         )
     }
 }

@@ -1,15 +1,40 @@
 import React from 'react'
+import RaisedButton from 'material-ui/RaisedButton'
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
 
 import classes from '../containers/Form.css'
+
 
 const FormInput = (props) => {
     return (
         <div className={classes.InputCol}>
             <form>
                 <div className={classes.InputRow}>
-                <label className={classes.RadioBtn} onChange={props.onChangeRadio}><input type="radio" defaultChecked name="inputMode" value="str"/> is String?</label>
+
+                <RadioButtonGroup name="inputMode" defaultSelected="str" onChange={props.onChangeRadio}>
+                    <RadioButton
+                        value="str"
+                        label="is String?"
+                        className={classes.RadioBtn}
+                    />
+                    <RadioButton
+                        value="arr"
+                        label="is Array?"
+                        className={classes.RadioBtn}
+                    />
+                    <RadioButton
+                        value="obj"
+                        label="is Object?"
+                        className={classes.RadioBtn}
+                    />
+                </RadioButtonGroup>
+
+                {/* <label className={classes.RadioBtn} onChange={props.onChangeRadio}><input type="radio" defaultChecked name="inputMode" value="str"/> is String?</label>
+
                 <label className={classes.RadioBtn} onChange={props.onChangeRadio}><input type="radio" name="inputMode" value="obj"/> is Object?</label>
-                <label className={classes.RadioBtn} onChange={props.onChangeRadio}><input type="radio" name="inputMode" value="arr"/> is Array?</label>
+
+                <label className={classes.RadioBtn} onChange={props.onChangeRadio}><input type="radio" name="inputMode" value="arr"/> is Array?</label> */}
+
                 <input type="text" name="key" onChange={props.onChangeKey} placeholder="key" className={classes.inputKey} value={props.PropKey}/>
                     {[...Array(props.PropNum)].map((el, i) => (
                         <div key={`inputItem_${i}`}>
@@ -62,8 +87,8 @@ const FormInput = (props) => {
                         </div>
                     ))}
                 </div>
-                <button onClick={props.onClick}>Save</button>
-                <button onClick={props.onClickBtn}>Generate JSON</button>
+                <RaisedButton label="Save" onClick={props.onClick} style={{marginRight: '5px'}}/>
+                <RaisedButton label="Generate JSON" onClick={props.onClickBtn}/>
             </form>
         </div>
     )
